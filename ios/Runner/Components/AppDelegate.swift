@@ -51,16 +51,56 @@ class ArViewController : UIViewController {
     
     func CreateAr(){
         if #available(iOS 11.0, *) {
-            var label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-            label.center = CGPoint(x:160,y: 284)
-            label.textAlignment = .center
-            label.backgroundColor = UIColor.red
-            label.text = "I'm a test label"
-            self.view.addSubview(label)
+            let ar = ARSCNView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
+            let config = ARWorldTrackingConfiguration()
+            ar.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
+            ARSCNDebugOptions.showWorldOrigin]
+            ar.session.run(config)
+            addItems(sceneView: ar)
+            self.view.addSubview(ar)
             self.view.backgroundColor = UIColor.blue
         } else {
             // Fallback on earlier versions
             print("errrorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         }
+    }
+    
+    @available(iOS 11.0, *)
+    func addItems(sceneView:ARSCNView){
+        let doorNode = SCNNode(geometry: SCNPlane(width: 0.03, height: 0.06))
+        doorNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+        let boxNode = SCNNode(geometry: SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0))
+        boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+        let node = SCNNode()
+        node.geometry = SCNPyramid(width: 0.1, height: 0.1, length: 0.1)
+        node.geometry = SCNCapsule(capRadius: 0.1/2 ,height: 0.3/2)
+        node.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1/4)
+        node.geometry = SCNPyramid(width: 0.1, height: 0.08, length: 0.1)
+        node.geometry?.firstMaterial?.specular.contents = UIColor.white
+        node.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+        node.position = SCNVector3(0.0,0.0,-0.2)
+        boxNode.position = SCNVector3(0,-0.05,0)
+        doorNode.position = SCNVector3(0, 0, 0.06)
+        //node.eulerAngles = SCNVector3(0,0,180.degreesToRadiansFloat)
+        sceneView.scene.rootNode.addChildNode(node)
+        node.addChildNode(boxNode)
+        boxNode.addChildNode(doorNode)
+    }
+}
+extension Int {
+    var degreesToRadians: Double {
+        return Double(self) * .pi/180
+    }
+}
+
+extension Int {
+    var degreesToRadiansFloat: Float {
+        return (Double(self) * .pi/180).toFloat
+    }
+}
+
+extension Double {
+    var toFloat: Float {
+        return Float(self)
     }
 }
