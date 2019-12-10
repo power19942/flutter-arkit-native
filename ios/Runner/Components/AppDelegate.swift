@@ -38,6 +38,7 @@ import ARKit
     
     func startAr(){
         let ar = ArViewController()
+        ar.modalPresentationStyle = .fullScreen
         UIApplication.shared.keyWindow?.rootViewController?.present(ar, animated: true, completion: nil)
     }
 }
