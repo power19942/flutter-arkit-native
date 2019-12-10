@@ -52,7 +52,7 @@ class ArViewController : UIViewController {
     
     func CreateAr(){
         if #available(iOS 11.0, *) {
-            let ar = ARSCNView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
+            let ar = ARSCNView(frame: view.frame)
             let config = ARWorldTrackingConfiguration()
             ar.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
             ARSCNDebugOptions.showWorldOrigin]
